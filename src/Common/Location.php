@@ -2,7 +2,7 @@
 
 namespace AdventOfCode\Common;
 
-class Point
+class Location
 {
     public $x;
     public $y;

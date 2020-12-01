@@ -11,12 +11,12 @@ class Map
         $this->map = $map;
     }
 
-    public function getValue(Point $point) : ?string
+    public function getValue(Location $point) : ?string
     {
         return $this->map[$point->y][$point->x] ?? null;
     }
 
-    public function setValue(Point $point, string $value)
+    public function setValue(Location $point, string $value)
     {
         $this->map[$point->y][$point->x] = $value;
     }
@@ -24,10 +24,10 @@ class Map
     public function draw(array $definitions = [])
     {
         $output = '';
-        $this->getBoardPosition($minX, $maxX, $minY, $maxY);
+        $this->getExtremes($minX, $maxX, $minY, $maxY);
         for ($y = $minY; $y <= $maxY; $y++) {
             for ($x = $minX; $x <= $maxX; $x++) {
-                if (!$value = $this->getValue(new Point($x, $y))) {
+                if (!$value = $this->getValue(new Location($x, $y))) {
                     $output .= ' ';
                     continue;
                 }
@@ -38,7 +38,7 @@ class Map
         echo $output;
     }
 
-    private function getBoardPosition(int &$minX = null, int &$maxX = null, int &$minY = null, int &$maxY = null)
+    private function getExtremes(int &$minX = null, int &$maxX = null, int &$minY = null, int &$maxY = null)
     {
         foreach ($this->map as $row) {
             foreach (array_keys($row) as $index) {
