@@ -2,5 +2,9 @@
   "name": "piiu/advent-of-code-2020",
   "autoload": {
     "psr-4": {"AdventOfCode\\": "src/"}
+  },
+  "scripts": {
+    "days": "@php src/Console/days.php",
+    "day": "@php src/Console/days.php -d"
   }
 }

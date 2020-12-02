@@ -4,7 +4,7 @@
 `composer install`
 
 #### Run all days ####
-`php run.php`
+`composer days`
 
 #### Run a specific day ####
-`php run.php -d=[day_number]`
+`composer day [day_number]`

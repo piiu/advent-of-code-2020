@@ -2,6 +2,8 @@
 
 namespace AdventOfCode\Common;
 
+use AdventOfCode\Console\Utils;
+
 abstract class BaseDay
 {
     private $input;
@@ -26,7 +28,7 @@ abstract class BaseDay
     public function results()
     {
         $this->execute();
-        Utils::output([
+        Utils::outputArray([
             "######## Day $this->dayNumber ########",
             'Part 1: ' . $this->part1 ?? self::INVALID_ANSWER,
             'Part 2: ' . $this->part2 ?? self::INVALID_ANSWER

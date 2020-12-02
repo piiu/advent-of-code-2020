@@ -2,6 +2,8 @@
 
 namespace AdventOfCode\Common;
 
+use AdventOfCode\Console\Utils;
+
 class Map
 {
     private $map;
@@ -31,7 +33,7 @@ class Map
             }
             $output[] = $row;
         }
-        Utils::output($output);
+        Utils::outputArray($output);
     }
 
     private function getExtremes(int &$minX = null, int &$maxX = null, int &$minY = null, int &$maxY = null)
