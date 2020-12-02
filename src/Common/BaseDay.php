@@ -26,31 +26,23 @@ abstract class BaseDay
     public function results()
     {
         $this->execute();
-        $this->output([
+        Utils::output([
             "######## Day $this->dayNumber ########",
             'Part 1: ' . $this->part1 ?? self::INVALID_ANSWER,
             'Part 2: ' . $this->part2 ?? self::INVALID_ANSWER
         ]);
     }
 
-    protected function output(array $data)
-    {
-        foreach ($data as $line) {
-            echo $line . PHP_EOL;
-        }
-    }
-
-    protected function getInputArray(string $delimiter) : array
+    protected function getInputArray(string $delimiter = "\n") : array
     {
         return explode($delimiter, $this->input);
     }
 
     protected function getInputMap() : Map
     {
-        $rows = explode(PHP_EOL, $this->input);
         $map = array_map(function ($row) {
             return str_split($row);
-        }, $rows);
+        }, $this->getInputArray());
         return new Map($map);
     }
 }

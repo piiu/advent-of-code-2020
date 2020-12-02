@@ -8,7 +8,7 @@ class Day01 extends BaseDay
 {
     public function execute()
     {
-        $numbers = $this->getInputArray("\n");
+        $numbers = $this->getInputArray();
         foreach ($numbers as $i1) {
             foreach ($numbers as $i2) {
                 if (!$this->part1 && $i1 + $i2 === 2020) {

@@ -21,21 +21,17 @@ class Map
         $this->map[$point->y][$point->x] = $value;
     }
 
-    public function draw(array $definitions = [])
+    public function draw(array $output = [])
     {
-        $output = '';
         $this->getExtremes($minX, $maxX, $minY, $maxY);
         for ($y = $minY; $y <= $maxY; $y++) {
+            $row = '';
             for ($x = $minX; $x <= $maxX; $x++) {
-                if (!$value = $this->getValue(new Location($x, $y))) {
-                    $output .= ' ';
-                    continue;
-                }
-                $output .= $definitions[$value] ?? $value;
+                $row .= $this->getValue(new Location($x, $y)) ?? ' ';
             }
-            $output .= PHP_EOL;
+            $output[] = $row;
         }
-        echo $output;
+        Utils::output($output);
     }
 
     private function getExtremes(int &$minX = null, int &$maxX = null, int &$minY = null, int &$maxY = null)
