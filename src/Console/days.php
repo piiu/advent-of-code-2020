@@ -4,22 +4,16 @@ namespace AdventOfCode\Console;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$allDays = range(1, 25);
-
-$options = getopt("d:");
-if (!empty($options)) {
-    $day = $options['d'] ?? null;
-    if (!$day || !in_array($day, $allDays)) {
-        Utils::output('Invalid day value');
-        die;
+if ($day = Utils::getInputOption("d")) {
+    if (!$class = Utils::getClassByDayNumber($day)) {
+        Utils::output('Invalid day value!');
+        return;
     }
-}
-
-$days = !empty($day) ? [$day] : $allDays;
-foreach ($days as $dayNumber) {
-    $day = str_pad($dayNumber, 2, '0', STR_PAD_LEFT);
-    $class = "AdventOfCode\Days\Day$day";
-    if (class_exists($class)) {
-        (new $class())->results();
+    $class->results();
+} else {
+    foreach (range(1, 25) as $dayNumber) {
+        if ($class = Utils::getClassByDayNumber($dayNumber)) {
+            $class->results();
+        }
     }
 }

@@ -11,8 +11,6 @@ abstract class BaseDay
     protected $part1;
     protected $part2;
 
-    const INVALID_ANSWER = 'Something went wrong';
-
     public function __construct()
     {
         $dayNumber = preg_replace("/[^0-9]/", "", get_class($this));
@@ -30,8 +28,8 @@ abstract class BaseDay
         $this->execute();
         Utils::outputArray([
             "######## Day $this->dayNumber ########",
-            'Part 1: ' . $this->part1 ?? self::INVALID_ANSWER,
-            'Part 2: ' . $this->part2 ?? self::INVALID_ANSWER
+            'Part 1: ' . $this->part1,
+            'Part 2: ' . $this->part2
         ]);
     }
 
