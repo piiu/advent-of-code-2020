@@ -6,6 +6,8 @@ abstract class BaseDay
 {
     private $input;
     private $dayNumber;
+    protected $part1;
+    protected $part2;
 
     const INVALID_ANSWER = 'Something went wrong';
 
@@ -19,15 +21,15 @@ abstract class BaseDay
         $this->dayNumber = (int)$dayNumber;
     }
 
-    public abstract function getPart1() : string;
-    public abstract function getPart2() : string;
+    public abstract function execute();
 
     public function results()
     {
+        $this->execute();
         $this->output([
-            'Day ' . $this->dayNumber,
-            'Part 1: ' . $this->getPart1(),
-            'Part 2: ' . $this->getPart2()
+            "######## Day $this->dayNumber ########",
+            'Part 1: ' . $this->part1 ?? self::INVALID_ANSWER,
+            'Part 2: ' . $this->part2 ?? self::INVALID_ANSWER
         ]);
     }
 
