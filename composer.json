@@ -5,6 +5,6 @@
   },
   "scripts": {
     "days": "@php src/Console/days.php",
-    "day": "@php src/Console/days.php -d"
+    "day": "@php src/Console/day.php -d"
   }
 }

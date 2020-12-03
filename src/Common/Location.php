@@ -37,8 +37,8 @@ class Location
         return $this;
     }
 
-    public function isEqual(self $point) : bool
+    public function isEqual(self $location) : bool
     {
-        return $this->x === $point->x && $this->y === $point->y;
+        return $this->x === $location->x && $this->y === $location->y;
     }
 }
