@@ -23,10 +23,11 @@ class Day03 extends BaseDay
 
         $counts = [];
         foreach (self::SLOPES as $slope) {
+            list($right, $down) = $slope;
             $location = new Location();
             $count = 0;
             do {
-                $location->move(Location::RIGHT, $slope[0])->move(Location::DOWN, $slope[1]);
+                $location->move(Location::RIGHT, $right)->move(Location::DOWN, $down);
                 $location->x = $location->x % $width;
                 if ($map->getValue($location) === self::TREE) {
                     $count++;
