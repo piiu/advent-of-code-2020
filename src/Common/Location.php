@@ -7,33 +7,34 @@ class Location
     public $x;
     public $y;
 
-    const NORTH = 1;
-    const EAST = 2;
-    const SOUTH = 3;
-    const WEST = 4;
+    const UP = 1;
+    const DOWN = 2;
+    const LEFT = 3;
+    const RIGHT = 4;
 
-    const DIRECTIONS = [self::NORTH, self::EAST, self::SOUTH, self::WEST];
+    const DIRECTIONS = [self::UP, self::DOWN, self::LEFT, self::RIGHT];
 
-    public function __construct(int $x, int $y)
+    public function __construct(int $x = 0, int $y = 0)
     {
         $this->x = $x;
         $this->y = $y;
     }
 
-    public function move(int $direction)
+    public function move(int $direction, int $amount = 1) : self
     {
-        if ($direction === self::NORTH) {
-            $this->y += 1;
+        if ($direction === self::UP) {
+            $this->y -= $amount;
         }
-        if ($direction === self::SOUTH) {
-            $this->y -= 1;
+        if ($direction === self::DOWN) {
+            $this->y += $amount;
         }
-        if ($direction === self::WEST) {
-            $this->x += 1;
+        if ($direction === self::LEFT) {
+            $this->x -= $amount;
         }
-        if ($direction === self::EAST) {
-            $this->x -= 1;
+        if ($direction === self::RIGHT) {
+            $this->x += $amount;
         }
+        return $this;
     }
 
     public function isEqual(self $point) : bool

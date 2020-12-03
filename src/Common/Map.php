@@ -36,6 +36,12 @@ class Map
         Utils::outputArray($output);
     }
 
+    public function getWidth()
+    {
+        $this->getExtremes($minX, $maxX);
+        return $maxX - $minX;
+    }
+
     private function getExtremes(int &$minX = null, int &$maxX = null, int &$minY = null, int &$maxY = null)
     {
         foreach ($this->map as $row) {
