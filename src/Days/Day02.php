@@ -8,8 +8,6 @@ class Day02 extends BaseDay
 {
     public function execute()
     {
-        $this->part1 = 0;
-        $this->part2 = 0;
         foreach ($this->getInputArray() as $row) {
             preg_match('/([0-9]*)-([0-9]*) (\w): (\w*)/', $row, $matches);
             list(, $n1, $n2, $letter, $password) = $matches;

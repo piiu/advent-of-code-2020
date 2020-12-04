@@ -6,8 +6,8 @@ use AdventOfCode\Console\Utils;
 
 abstract class BaseDay
 {
-    private $input;
     private $dayNumber;
+    protected $input;
     protected $part1;
     protected $part2;
 
