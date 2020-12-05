@@ -10,9 +10,7 @@ use AdventOfCode\Common\Map;
 
 class Day05 extends BaseDay
 {
-    private $seatMap;
-    private $minRow;
-    private $maxRow;
+    private Map $seatMap;
 
     const TOTAL_ROWS = 128;
     const TOTAL_COLUMNS = 8;
@@ -25,31 +23,37 @@ class Day05 extends BaseDay
 
     public function execute()
     {
+        $this->populateSeatMap();
+        $this->findAnEmptySeat();
+    }
+
+    private function populateSeatMap()
+    {
         foreach ($this->getInputArray() as $boardingPass) {
             $seat = $this->getSeat($boardingPass);
-            $this->updateMinMaxValues($seat);
-            $this->seatMap->setValue($seat, 'X');
-        }
-
-        for ($column = 0; $column <= 8; $column++) {
-            for ($row = $this->minRow; $row <= $this->maxRow; $row++) {
-                $seatTaken = $this->isSeatTaken($row, $column);
-                if ($seatTaken) {
-                    continue;
-                }
-                if ($row === $this->minRow && !$this->isSeatTaken($row, $column - 1)) {
-                    // This is the start of the plane
-                    continue;
-                }
-                $this->part2 =$this->getSeatId($row, $column);
-                return;
+            $seatId = $this->getSeatId($seat);
+            if (!$this->part1 || $this->part1 < $seatId) {
+                $this->part1 = $seatId;
             }
+            $this->seatMap->setValue($seat, 'X');
         }
     }
 
-    private function isSeatTaken(int $row, int $column) : bool
+    private function findAnEmptySeat()
     {
-        return !empty($this->seatMap->getValue(new Location($row, $column)));
+        for ($column = 0; $column < self::TOTAL_COLUMNS; $column++) {
+            for ($row = 0; $row < self::TOTAL_ROWS; $row++) {
+                $seat = new Location($row, $column);
+                if ($this->isSeatTaken($seat)) {
+                    $seatsStarted = true;
+                    continue;
+                }
+                if (!empty($seatsStarted)) {
+                    $this->part2 =$this->getSeatId($seat);
+                    return;
+                }
+            }
+        }
     }
 
     private function getSeat(string $boardingPass) : Location
@@ -58,53 +62,44 @@ class Day05 extends BaseDay
         $column = range(0, self::TOTAL_COLUMNS - 1);
         foreach (str_split($boardingPass) as $letter) {
             if ($letter === 'F') {
-                $this->getLowerHalf($row);
+                $row = $this->getLowerHalf($row);
             }
             if ($letter === 'B') {
-                $this->getUpperHalf($row);
+                $row = $this->getUpperHalf($row);
             }
             if ($letter === 'L') {
-                $this->getLowerHalf($column);
+                $column = $this->getLowerHalf($column);
             }
             if ($letter === 'R') {
-                $this->getUpperHalf($column);
+                $column = $this->getUpperHalf($column);
             }
         }
         return new Location($row[0], $column[0]);
     }
 
-    private function getSeatId(int $row, int $column) : int
+    private function getSeatId(Location $seat) : int
     {
-        return $row * 8 + $column;
+        return $seat->x * 8 + $seat->y;
     }
 
-    private function updateMinMaxValues(Location $seat)
+    private function isSeatTaken(Location $seat) : bool
     {
-        $seatId = $this->getSeatId($seat->x, $seat->y);
-        if (!$this->part1 || $this->part1 < $seatId) {
-            $this->part1 = $seatId;
-        }
-        if ($this->minRow === null || $this->minRow > $seat->x) {
-            $this->minRow = $seat->x;
-        }
-        if ($this->maxRow === null || $this->maxRow < $seat->x) {
-            $this->maxRow = $seat->x;
-        }
+        return !empty($this->seatMap->getValue($seat));
     }
 
-    private function getUpperHalf(array &$range)
+    private function getUpperHalf(array $range) : array
     {
         $first = array_shift($range);
         $last = array_pop($range);
         $middle = ceil(($first + $last) / 2);
-        $range = range($middle, $last);
+        return range($middle, $last);
     }
 
-    private function getLowerHalf(array &$range)
+    private function getLowerHalf(array $range) : array
     {
         $first = array_shift($range);
         $last = array_pop($range);
         $middle = floor(($first + $last) / 2);
-        $range = range($first, $middle);
+        return range($first, $middle);
     }
 }

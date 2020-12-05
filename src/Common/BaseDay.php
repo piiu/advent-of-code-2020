@@ -6,10 +6,10 @@ use AdventOfCode\Console\Utils;
 
 abstract class BaseDay
 {
-    private $dayNumber;
-    protected $input;
-    protected $part1;
-    protected $part2;
+    private int $dayNumber;
+    private string $input;
+    protected string $part1 = "0";
+    protected string $part2 = "0";
 
     public function __construct()
     {

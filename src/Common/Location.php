@@ -4,8 +4,8 @@ namespace AdventOfCode\Common;
 
 class Location
 {
-    public $x;
-    public $y;
+    public int $x;
+    public int $y;
 
     const UP = 1;
     const DOWN = 2;
