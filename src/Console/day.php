@@ -8,7 +8,7 @@ if (!$day = Utils::getInputOption("d")) {
     Utils::output('Please input day number!');
     return;
 }
-if (!$class = Utils::getClassByDayNumber($day)) {
+if (!is_numeric($day) || !$class = Utils::getClassByDayNumber($day)) {
     Utils::output('Invalid day value!');
     return;
 }
