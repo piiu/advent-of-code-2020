@@ -42,7 +42,7 @@ class Day07 extends BaseDay
 
     private function formatRules()
     {
-        foreach ($this->getInputArray(PHP_EOL) as $rule) {
+        foreach ($this->getInputArray() as $rule) {
             preg_match('/(\w* \w*) bags contain (.*)\./', $rule, $matches);
             $color = $matches[1];
             $contents = $matches[2];
