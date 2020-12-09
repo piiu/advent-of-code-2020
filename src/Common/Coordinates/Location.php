@@ -1,6 +1,6 @@
 <?php
 
-namespace AdventOfCode\Common;
+namespace AdventOfCode\Common\Coordinates;
 
 class Location
 {

@@ -3,8 +3,8 @@
 namespace AdventOfCode\Days;
 
 use AdventOfCode\Common\BaseDay;
-use AdventOfCode\Game\Console;
-use AdventOfCode\Game\Instruction;
+use AdventOfCode\Common\Game\Console;
+use AdventOfCode\Common\Game\Instruction;
 
 class Day08 extends BaseDay
 {

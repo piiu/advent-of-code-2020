@@ -2,6 +2,7 @@
 
 namespace AdventOfCode\Common;
 
+use AdventOfCode\Common\Coordinates\Map;
 use AdventOfCode\Console\Utils;
 
 abstract class BaseDay
@@ -14,7 +15,7 @@ abstract class BaseDay
     public function __construct()
     {
         $dayNumber = preg_replace("/[^0-9]/", "", get_class($this));
-        $inputFile = __DIR__ . '\..\Input\day' . $dayNumber;
+        $inputFile = __DIR__ . '\..\..\input\day' . $dayNumber;
         if (file_exists($inputFile)) {
             $this->input = file_get_contents($inputFile);
         }

@@ -5,8 +5,8 @@ namespace AdventOfCode\Days;
 
 
 use AdventOfCode\Common\BaseDay;
-use AdventOfCode\Common\Location;
-use AdventOfCode\Common\Map;
+use AdventOfCode\Common\Coordinates\Location;
+use AdventOfCode\Common\Coordinates\Map;
 
 class Day05 extends BaseDay
 {

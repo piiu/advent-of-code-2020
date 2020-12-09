@@ -1,6 +1,6 @@
 <?php
 
-namespace AdventOfCode\Game;
+namespace AdventOfCode\Common\Game;
 
 class Instruction
 {
