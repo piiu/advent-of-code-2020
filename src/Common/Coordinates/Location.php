@@ -13,6 +13,16 @@ class Location
     const RIGHT = 4;
 
     const DIRECTIONS = [self::UP, self::DOWN, self::LEFT, self::RIGHT];
+    const DIRECTIONS_WITH_DIAGONALS = [
+        [self::UP],
+        [self::UP, self::RIGHT],
+        [self::RIGHT],
+        [self::RIGHT, self::DOWN],
+        [self::DOWN],
+        [self::DOWN, self::LEFT],
+        [self::LEFT],
+        [self::LEFT, self::UP]
+    ];
 
     public function __construct(int $x = 0, int $y = 0)
     {
@@ -33,6 +43,14 @@ class Location
         }
         if ($direction === self::RIGHT) {
             $this->x += $amount;
+        }
+        return $this;
+    }
+
+    public function moveMultiple(array $directions = []) : self
+    {
+        foreach ($directions as $direction) {
+            $this->move($direction);
         }
         return $this;
     }
