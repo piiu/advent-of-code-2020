@@ -81,7 +81,7 @@ class Map
 
     public function setNotSquare()
     {
-        $this->isSquare = true;
+        $this->isSquare = false;
     }
 
     public function getCountOfValue(string $value) : int
