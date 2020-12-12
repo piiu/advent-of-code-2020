@@ -12,7 +12,15 @@ class Location
     const LEFT = 3;
     const RIGHT = 4;
 
-    const DIRECTIONS = [self::UP, self::DOWN, self::LEFT, self::RIGHT];
+    const DIRECTIONS = [self::UP, self::RIGHT, self::DOWN, self::LEFT];
+
+    const COMPASS_TO_DIRECTION = [
+        'N' => self::UP,
+        'S' => self::DOWN,
+        'E' => self::RIGHT,
+        'W' => self::LEFT
+    ];
+
     const DIRECTIONS_WITH_DIAGONALS = [
         [self::UP],
         [self::UP, self::RIGHT],
@@ -58,5 +66,10 @@ class Location
     public function isEqual(self $location) : bool
     {
         return $this->x === $location->x && $this->y === $location->y;
+    }
+
+    public function getManhattanDistance() : int
+    {
+        return abs($this->x) + abs($this->y);
     }
 }
