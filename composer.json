@@ -7,9 +7,14 @@
   },
   "scripts": {
     "days": "@php src/Console/days.php",
-    "day": "@php src/Console/day.php -d"
+    "day": "@php src/Console/day.php -d",
+    "post-install-cmd": [
+      "@php -r \"file_exists('config/app.ini') || copy('config/app.ini.example', 'config/app.ini');\""
+    ]
   },
   "require": {
-    "php": "7.4.*"
-  }
+    "php": "7.4.*",
+    "francescomalatesta/wolframalphaphp": "9999999-dev"
+  },
+  "minimum-stability": "dev"
 }
