@@ -10,20 +10,34 @@ class Day13 extends BaseDay
 {
     public function execute()
     {
-        list($earliest, $buses) = $this->getInputArray(PHP_EOL);
+        list($estimate, $buses) = $this->getInputArray(PHP_EOL);
         $buses = explode(',', $buses);
 
+        $this->getNearest($estimate, $buses);
+
+        if (!$waEngine = $this->getWaEngine()) {
+            Utils::output('Missing Wolfram Alpha AppID, can not calculate part 2');
+            return;
+        }
+        $this->getMinimalOffsetTime($buses, $waEngine);
+    }
+
+    public function getNearest(int $estimate, array $buses)
+    {
         foreach ($buses as $bus) {
             if ($bus === 'x') {
                 continue;
             }
-            $minWaited = ceil($earliest / $bus) * $bus - $earliest;
+            $minWaited = ceil($estimate / $bus) * $bus - $estimate;
             if (empty($min) || $min > $minWaited) {
                 $min = $minWaited;
                 $this->part1 = $bus * $minWaited;
             }
         }
+    }
 
+    public function getMinimalOffsetTime(array $buses, Engine $waEngine)
+    {
         $equations = [];
         foreach ($buses as $offset => $bus) {
             if ($bus !== 'x') {
@@ -31,12 +45,10 @@ class Day13 extends BaseDay
             }
         }
 
-        if ($waEngine = $this->getWaEngine()) {
-            $result = $waEngine->process(implode(', ', $equations), [], ['plaintext']);
-            $integerSolution = $result->pods->find('IntegerSolution')->subpods[0]->plaintext;
-            preg_match('/x = \d* n \+ (\d*), n element Z/', $integerSolution, $matches);
-            $this->part2 = $matches[1];
-        }
+        $result = $waEngine->process(implode(', ', $equations), [], ['plaintext']);
+        $integerSolution = $result->pods->find('IntegerSolution')->subpods[0]->plaintext;
+        preg_match('/x = \d* n \+ (\d*), n element Z/', $integerSolution, $matches);
+        $this->part2 = $matches[1];
     }
 
     private function getWaEngine(): ?Engine
@@ -45,7 +57,6 @@ class Day13 extends BaseDay
         if ($id = $ini['wolfram_alpha_app_id'] ?? null) {
             return new Engine($id);
         }
-        Utils::output('Missing Wolfram Alpha APP id from config');
         return null;
     }
 }
