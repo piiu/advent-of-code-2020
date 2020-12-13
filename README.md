@@ -9,3 +9,7 @@
 
 #### Run a specific day ####
 `composer day [day_number]`
+
+#### Issues ####
+- Day 11 is slow
+- Maybe I could learn some modular arithmetic and not use WolframAlpha (again!)
