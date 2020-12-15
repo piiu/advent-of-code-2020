@@ -8,10 +8,10 @@ class Day15 extends BaseDay
 {
     public function execute()
     {
-        $input = array_merge([''], $this->getInputArray(',')); // Force start from 1
-        $lastSpoken = array_flip($input);
+        $input = $this->getInputArray(',');
+        $lastSpoken = array_flip(array_merge([''], $input)); // Force start from 1
 
-        for ($i = count($input); $i <= 30000000; $i++) {
+        for ($i = count($lastSpoken); $i <= 30000000; $i++) {
             $speak = empty($lastSpokenTurn) ? 0 : $i - 1 - $lastSpokenTurn;
             $lastSpokenTurn = $lastSpoken[$speak] ?? null;
             $lastSpoken[$speak] = $i;
