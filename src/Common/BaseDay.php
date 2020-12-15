@@ -14,6 +14,7 @@ abstract class BaseDay
 
     public function __construct()
     {
+        ini_set('memory_limit', '2048M');
         $dayNumber = preg_replace("/[^0-9]/", "", get_class($this));
         $inputFile = __DIR__ . '\..\..\input\day' . $dayNumber;
         if (file_exists($inputFile)) {
@@ -26,9 +27,9 @@ abstract class BaseDay
 
     public function results()
     {
+        Utils::output("######## Day $this->dayNumber ########");
         $this->execute();
         Utils::outputArray([
-            "######## Day $this->dayNumber ########",
             'Part 1: ' . $this->part1,
             'Part 2: ' . $this->part2
         ]);
