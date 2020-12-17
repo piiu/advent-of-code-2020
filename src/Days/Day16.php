@@ -6,7 +6,6 @@ use AdventOfCode\Common\BaseDay;
 
 class Day16 extends BaseDay
 {
-
     public function execute()
     {
         list($rules, $ticket, $otherTickets) = $this->getInputArray(PHP_EOL.PHP_EOL);
