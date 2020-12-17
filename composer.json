@@ -14,7 +14,8 @@
   },
   "require": {
     "php": "7.4.*",
-    "francescomalatesta/wolframalphaphp": "9999999-dev"
+    "francescomalatesta/wolframalphaphp": "9999999-dev",
+    "minwork/array": "9999999-dev"
   },
   "minimum-stability": "dev"
 }

@@ -3,13 +3,12 @@
 namespace AdventOfCode\Days;
 
 use AdventOfCode\Common\BaseDay;
+use Minwork\Helper\Arr;
 
 class Day17 extends BaseDay
 {
     const ACTIVE = '#';
     const INACTIVE = '.';
-
-    private array $state;
 
     public function execute()
     {
@@ -17,73 +16,74 @@ class Day17 extends BaseDay
             return str_split($row);
         }, $this->getInputArray(PHP_EOL));
 
-        $this->state = [[$input]];
+        $state1 = [[$input]];
+        $state2 = [[$input]];
 
-        for ($i=0; $i<6; $i++) {
-            $this->expand();
-            $currentState = $this->state;
-            foreach ($currentState as $w => $dimension) {
-                foreach ($dimension as $z => $layer) {
-                    foreach ($layer as $y => $row) {
-                        foreach ($row as $x => $value) {
-                            $neighbours = $this->getNumberOfNeighbours($currentState, $x, $y, $z, $w);
-                            if ($value === self::ACTIVE && !in_array($neighbours, [2, 3])) {
-                                $this->state[$w][$z][$y][$x] = self::INACTIVE;
-                            }
-                            if ($value === self::INACTIVE && $neighbours === 3) {
-                                $this->state[$w][$z][$y][$x] = self::ACTIVE;
-                            }
-                        }
-                    }
-                }
-            }
+        for ($i = 0; $i < 6; $i++) {
+            $this->expand($state1);
+            $this->part1 = $this->cycle($state1);
+            $this->expand($state2, true);
+            $this->part2 = $this->cycle($state2);
         }
+    }
 
-        foreach ($this->state as $w => $dimension) {
+    private function cycle(array &$state, int $activeCount = 0) : int
+    {
+        $fixedState = $state;
+        foreach ($fixedState as $w => $dimension) {
             foreach ($dimension as $z => $layer) {
                 foreach ($layer as $y => $row) {
                     foreach ($row as $x => $value) {
-                        if ($value === self::ACTIVE) {
-                            $this->part1++;
+                        $coordinates = [$w, $z, $y, $x];
+                        $neighbours = $this->getNeighboursCount($fixedState, $coordinates, $value === self::ACTIVE);
+                        $newState = $this->shouldBeActive($value, $neighbours) ? self::ACTIVE : self::INACTIVE;
+                        $state = Arr::set($state, $coordinates, $newState);
+
+                        if ($newState === self::ACTIVE) {
+                            $activeCount++;
                         }
                     }
                 }
             }
         }
+
+        return $activeCount;
     }
 
-    private function getNumberOfNeighbours(array $state, $x, $y, $z, $w) : int
+    private function getNeighboursCount(array $state, array $coordinates, bool $self = true, int $number = 0) : int
     {
-        $number = 0;
-        foreach (range($x-1, $x+1) as $cx) {
-            foreach (range($y-1, $y+1) as $cy) {
-                foreach (range($z-1, $z+1) as $cz) {
-                    foreach (range($w-1, $w+1) as $cw) {
-                        if ($cx === $x && $cy === $y && $cz === $z && $cw === $w) {
-                            continue;
-                        }
-                        $value = $state[$cw][$cz][$cy][$cx] ?? null;
-                        if ($value && $value === self::ACTIVE) {
-                            $number++;
-                        }
-                    }
-                }
+        $coordinate = array_shift($coordinates);
+        foreach (range($coordinate-1, $coordinate+1) as $i) {
+            if (empty($state[$i])) {
+                continue;
+            }
+            if (is_array($state[$i])) {
+                $number = $this->getNeighboursCount($state[$i], $coordinates, false, $number);
+            }
+            if ($state[$i] === self::ACTIVE) {
+                $number++;
             }
         }
-
-        return $number;
+        return $self ? $number - 1 : $number;
     }
 
-    private function expand() {
-        $wKeys = array_keys($this->state);
-        foreach (range(min($wKeys)-1, max($wKeys)+1) as $w) {
-            $zKeys = array_keys($this->state[0]);
+    private function shouldBeActive(string $value, int $neighbours) : bool
+    {
+        return (($value === self::ACTIVE && in_array($neighbours, [2, 3])) || ($value === self::INACTIVE && $neighbours === 3));
+    }
+
+    private function expand(array &$state, bool $is4d = false)
+    {
+        $wKeys = array_keys($state);
+        $wRange = $is4d ? range(min($wKeys)-1, max($wKeys)+1) : [0];
+        foreach ($wRange as $w) {
+            $zKeys = array_keys($state[0]);
             foreach (range(min($zKeys) - 1, max($zKeys) + 1) as $z) {
-                $yKeys = array_keys($this->state[0][0]);
+                $yKeys = array_keys($state[0][0]);
                 foreach (range(min($yKeys) - 1, max($yKeys) + 1) as $y) {
-                    $xKeys = array_keys($this->state[0][0][0]);
+                    $xKeys = array_keys($state[0][0][0]);
                     foreach (range(min($xKeys) - 1, max($xKeys) + 1) as $x) {
-                        $this->state[$w][$z][$y][$x] = $this->state[$w][$z][$y][$x] ?? self::INACTIVE;
+                        $state[$w][$z][$y][$x] = $state[$w][$z][$y][$x] ?? self::INACTIVE;
                     }
                 }
             }
