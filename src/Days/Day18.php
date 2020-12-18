@@ -9,8 +9,8 @@ class Day18 extends BaseDay
     public function execute()
     {
         foreach ($this->getInputArray(PHP_EOL) as $exp) {
-            $this->part1 += $this->calculate($exp); // wrong: 30753705405211, right: 30753705453324
-            $this->part2 += $this->calculate($exp, '+'); // wrong: 244817530095800, right: 244817530095503
+            $this->part1 += $this->calculate($exp);
+            $this->part2 += $this->calculate($exp, '+');
         }
     }
 
