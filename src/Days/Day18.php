@@ -19,9 +19,9 @@ class Day18 extends BaseDay
         $exp = '('.$exp.')';
         while (preg_match('/\(([^()]+)\)/', $exp, $inner)) {
             while (preg_match("/\d+ [$first] \d+/", $inner[1], $single)) {
-                $inner[1] = preg_replace('/'.preg_quote($single[0]).'/', math_eval($single[0]), $inner[1], 1);
+                $inner[1] = preg_replace('/'.preg_quote($single[0]).'/', eval('return '.$single[0].';'), $inner[1], 1);
             }
-            $exp = str_replace($inner[0], math_eval($inner[1]), $exp);
+            $exp = str_replace($inner[0], eval('return '.$inner[1].';'), $exp);
         }
         return $exp;
     }

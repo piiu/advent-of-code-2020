@@ -1,22 +1,21 @@
 {
-  "name": "piiu/advent-of-code-2020",
-  "autoload": {
-    "psr-4": {
-      "AdventOfCode\\": "src/"
-    }
-  },
-  "scripts": {
-    "days": "@php src/Console/days.php",
-    "day": "@php src/Console/day.php -d",
-    "post-install-cmd": [
-      "@php -r \"file_exists('config/app.ini') || copy('config/app.ini.example', 'config/app.ini');\""
-    ]
-  },
-  "require": {
-    "php": "7.4.*",
-    "francescomalatesta/wolframalphaphp": "9999999-dev",
-    "minwork/array": "9999999-dev",
-    "langleyfoxall/math_eval": "9999999-dev"
-  },
-  "minimum-stability": "dev"
+    "name": "piiu/advent-of-code-2020",
+    "autoload": {
+        "psr-4": {
+            "AdventOfCode\\": "src/"
+        }
+    },
+    "scripts": {
+        "days": "@php src/Console/days.php",
+        "day": "@php src/Console/day.php -d",
+        "post-install-cmd": [
+            "@php -r \"file_exists('config/app.ini') || copy('config/app.ini.example', 'config/app.ini');\""
+        ]
+    },
+    "require": {
+        "php": "7.4.*",
+        "francescomalatesta/wolframalphaphp": "9999999-dev",
+        "minwork/array": "9999999-dev"
+    },
+    "minimum-stability": "dev"
 }
