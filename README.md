@@ -11,5 +11,7 @@
 `composer day [day_number]`
 
 #### Issues ####
-- Day 11 is slow
-- Maybe I could learn some modular arithmetic and not use WolframAlpha (again!)
+- Day 11 - Slow
+- Day 13 - Maybe I could learn some modular arithmetic and not use WolframAlpha (again!)
+- Day 19 - Part 2 answer slightly off
+- Day 20 - Part 2 only works with example, no sea monsters found with live data

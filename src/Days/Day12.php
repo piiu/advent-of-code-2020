@@ -54,7 +54,7 @@ class Day12 extends BaseDay
                 continue;
             }
             if (in_array($letter, ['L', 'R'])) {
-                $this->rotate($waypoint, $letter, $number);
+                $waypoint->rotate($number, $letter);
                 continue;
             }
             $waypoint->move(Location::COMPASS_TO_DIRECTION[$letter], $number);
@@ -82,16 +82,5 @@ class Day12 extends BaseDay
             $newIndex = ($currentIndex + 4 - $degrees / 90) % 4;
         }
         $currentDirection = Location::DIRECTIONS[$newIndex];
-    }
-
-    private function rotate(Location &$location, string $direction, int $degrees)
-    {
-        for ($i = 0; $i < $degrees / 90; $i++) {
-            if ($direction === 'R') {
-                $location = new Location(-1 * $location->y, $location->x);
-            } else {
-                $location = new Location($location->y, -1 * $location->x);
-            }
-        }
     }
 }

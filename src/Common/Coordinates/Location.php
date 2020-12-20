@@ -72,4 +72,22 @@ class Location
     {
         return abs($this->x) + abs($this->y);
     }
+
+    public function modifyCoordinates(int $newX, int $newY)
+    {
+        $this->x = $newX;
+        $this->y = $newY;
+    }
+
+    public function rotate(int $degrees = 90, string $direction = 'R') : self
+    {
+        for ($i = 0; $i < $degrees / 90; $i++) {
+            if ($direction === 'R') {
+                $this->modifyCoordinates(-1 * $this->y, $this->x);
+            } else {
+                $this->modifyCoordinates($this->y, -1 * $this->x);
+            }
+        }
+        return $this;
+    }
 }

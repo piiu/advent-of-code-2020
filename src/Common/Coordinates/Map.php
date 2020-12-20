@@ -9,7 +9,10 @@ class Map
     private array $map;
     private bool $isSquare = true;
 
-    public function __construct(array $map)
+    const AXIS_X = 'x';
+    const AXIS_Y = 'y';
+
+    public function __construct(array $map = [])
     {
         $this->map = $map;
     }
@@ -73,10 +76,10 @@ class Map
 
     private function getSquareExtremes(int &$minX = null, int &$maxX = null, int &$minY = null, int &$maxY = null)
     {
-        $minX = 0;
-        $maxX = count($this->map[0]) - 1;
-        $minY = 0;
-        $maxY = count($this->map) - 1;
+        $minX = min(array_keys($this->map[0]));
+        $maxX = max(array_keys($this->map[0]));
+        $minY = min(array_keys($this->map));
+        $maxY = max(array_keys($this->map));
     }
 
     public function setNotSquare()
@@ -96,5 +99,84 @@ class Map
             }
         }
         return $count;
+    }
+
+    public function getLocationsOfValue(string $value) : array
+    {
+        $locations = [];
+        $this->getExtremes($minX, $maxX, $minY, $maxY);
+        for ($y = $minY; $y <= $maxY; $y++) {
+            for ($x = $minX; $x <= $maxX; $x++) {
+                $location = new Location($x, $y);
+                if ($this->getValue($location) === $value) {
+                    $locations[] = $location;
+                }
+            }
+        }
+        return $locations;
+    }
+
+    public function getRotatedMap(int $degrees = 90) : self
+    {
+        $newMap = new self();
+        $this->getExtremes($minX, $maxX, $minY, $maxY);
+        for ($y = $minY; $y <= $maxY; $y++) {
+            for ($x = $minX; $x <= $maxX; $x++) {
+                $newLocation = (new Location($x, $y))->rotate($degrees);
+                $newMap->setValue($newLocation, $this->getValue(new Location($x, $y)));
+            }
+        }
+        $newMap->sort();
+        return $newMap;
+    }
+
+    public function getFlipped(string $axis) : self
+    {
+        $newMap = new self();
+        $this->getExtremes($minX, $maxX, $minY, $maxY);
+        for ($y = $minY; $y <= $maxY; $y++) {
+            for ($x = $minX; $x <= $maxX; $x++) {
+                $newLocation = $axis === self::AXIS_X ? new Location(-$x, $y) : new Location($x, -$y);
+                $newMap->setValue($newLocation, $this->getValue(new Location($x, $y)));
+            }
+        }
+        $newMap->sort();
+        return $newMap;
+    }
+
+    public function getEdge(int $direction) : array
+    {
+        $this->getExtremes($minX, $maxX, $minY, $maxY);
+        switch ($direction) {
+            case Location::UP:
+                return $this->map[$minY];
+            case Location::DOWN:
+                return $this->map[$maxY];
+            case Location::LEFT:
+                return array_map(function ($row) use($minX) {
+                        return $row[$minX];
+                    }, $this->map);
+            case Location::RIGHT:
+                return array_map(function ($row) use($maxX) {
+                    return $row[$maxX];
+                }, $this->map);
+        }
+        throw new \Exception('Invalid direction');
+    }
+
+    public function sort()
+    {
+        foreach (array_keys($this->map) as $row) {
+            ksort($this->map[$row]);
+        }
+        ksort($this->map);
+    }
+
+    public function getFirstRow() {
+        return array_shift($this->map);
+    }
+
+    public function addRow(array $row) {
+        $this->map[] = $row;
     }
 }

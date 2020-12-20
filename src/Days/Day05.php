@@ -18,7 +18,7 @@ class Day05 extends BaseDay
     public function __construct()
     {
         parent::__construct();
-        $this->seatMap = new Map([]);
+        $this->seatMap = new Map();
     }
 
     public function execute()
