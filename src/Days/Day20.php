@@ -5,7 +5,6 @@ namespace AdventOfCode\Days;
 use AdventOfCode\Common\BaseDay;
 use AdventOfCode\Common\Coordinates\Location;
 use AdventOfCode\Common\Coordinates\Map;
-use AdventOfCode\Console\Utils;
 
 class Day20 extends BaseDay
 {
@@ -53,7 +52,7 @@ class Day20 extends BaseDay
         foreach ($tilePositions as $tileRow) {
             for ($i = 0; $i < $this->tileWidth - 1; $i++) {
                 $row = [];
-                foreach ($tileRow as $tileColumnIndex => $tile) {
+                foreach ($tileRow as $tile) {
                     $rowValues = $tile->getFirstRow();
                     if ($i === 0) {
                         continue;
