@@ -26,7 +26,6 @@ class Day20 extends BaseDay
         $image = $this->buildImage($tilePositions);
         $image = $this->markSeaMonsters($image);
         $this->part2 = $image->getCountOfValue('#');
-
     }
 
     private function getTilePositions() : array
@@ -227,7 +226,7 @@ class Day20 extends BaseDay
 
     private function loadTiles($input)
     {
-        $input = array_reverse($input);
+        $input = array_reverse($input); // If you're using my code and it doesn't find any monsters, try removing this line
         foreach ($input as $item) {
             $rows = explode(PHP_EOL, $item);
             $id = preg_replace("/[^0-9]/", "", array_shift($rows));
