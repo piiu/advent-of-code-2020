@@ -19,13 +19,14 @@ class Day20 extends BaseDay
 
     public function execute()
     {
-        $this->loadTiles();
+        $this->loadTiles($this->getInputArray(PHP_EOL.PHP_EOL));
         $tilePositions = $this->getTilePositions();
         $this->part1 = array_product($this->cornerIds);
 
         $image = $this->buildImage($tilePositions);
         $image = $this->markSeaMonsters($image);
         $this->part2 = $image->getCountOfValue('#');
+
     }
 
     private function getTilePositions() : array
@@ -78,7 +79,7 @@ class Day20 extends BaseDay
         throw new \Exception('No monsters here!');
     }
 
-    private function mark(Map &$image, $seaMonsterLocation) : bool
+    private function mark(Map $image, $seaMonsterLocation) : bool
     {
         $monsters = 0;
         $location = new Location();
@@ -224,9 +225,10 @@ class Day20 extends BaseDay
         return true;
     }
 
-    private function loadTiles()
+    private function loadTiles($input)
     {
-        foreach ($this->getInputArray(PHP_EOL.PHP_EOL) as $item) {
+        $input = array_reverse($input);
+        foreach ($input as $item) {
             $rows = explode(PHP_EOL, $item);
             $id = preg_replace("/[^0-9]/", "", array_shift($rows));
             $tile = new Map(array_map('str_split', $rows));
