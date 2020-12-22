@@ -4,14 +4,12 @@ namespace AdventOfCode\Common\Game;
 
 class Player
 {
-    private string $name;
     private array $deck;
+    private array $previousDecks = [];
 
-    public function __construct(string $definition)
+    public function __construct(array $deck)
     {
-        $rows = explode(PHP_EOL, $definition);
-        $this->name = rtrim(array_shift($rows),':');
-        $this->deck = $rows;
+        $this->deck = $deck;
     }
 
     public function isLoser() : bool
@@ -21,6 +19,7 @@ class Player
 
     public function drawCard() : int
     {
+        $this->previousDecks[] = $this->deck;
         return array_shift($this->deck);
     }
 
@@ -37,5 +36,26 @@ class Player
             $score += $i * $this->deck[count($this->deck) - $i];
         }
         return $score;
+    }
+
+    public function hasHappenedBefore() : bool
+    {
+        foreach ($this->previousDecks as $previousDeck) {
+            if ($previousDeck === $this->deck) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function cardsLeft() : int
+    {
+        return count($this->deck);
+    }
+
+    public function getCopy(int $deckSize) : self
+    {
+        $newDeck = array_slice($this->deck, 0, $deckSize);
+        return new Player($newDeck);
     }
 }

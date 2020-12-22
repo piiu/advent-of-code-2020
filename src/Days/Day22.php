@@ -7,46 +7,98 @@ use AdventOfCode\Common\Game\Player;
 
 class Day22 extends BaseDay
 {
-    /** @var Player[] */
-    private array $players = [];
-
     public function execute()
     {
-        foreach ($this->getInputArray(PHP_EOL.PHP_EOL) as $definition) {
-            $this->players[] = new Player($definition);
-        }
-        while (!$this->gameOver()) {
-            $this->playRound();
-        }
-        $this->part1 = $this->getWinner()->getScore();
+        $winner = $this->play($players = $this->getPlayers());
+        $this->part1 = $players[$winner]->getScore();
+
+        $winner = $this->playRecursive($players = $this->getPlayers());
+        $this->part2 = $players[$winner]->getScore();
     }
 
-    private function playRound()
+    private function play(array $players) : int
+    {
+        while (!$this->gameOver($players)) {
+            $drawnCards = [];
+            foreach ($players as $i => $player) {
+                $drawnCards[$i] = $player->drawCard();
+            }
+            $winnerCard = max($drawnCards);
+            $this->redistributeCards($players, $winnerCard, $drawnCards);
+        }
+        return $this->getWinner($players);
+    }
+
+    private function playRecursive(array $players) : int
+    {
+        while (!$this->gameOver($players)) {
+            $this->playRound($players);
+            foreach ($players as $i => $player) {
+                if ($player->hasHappenedBefore()) {
+                    return 0;
+                }
+            }
+        }
+        return $this->getWinner($players);
+    }
+
+    private function playRound(array $players)
     {
         $drawnCards = [];
-        foreach ($this->players as $i => $player) {
-            $drawnCards[$i] = $player->drawCard();
+        $isRecursive = true;
+        foreach ($players as $i => $player) {
+            $card = $player->drawCard();
+            if ($card > $player->cardsLeft()) {
+                $isRecursive = false;
+            }
+            $drawnCards[$i] = $card;
         }
-        $winner = array_keys($drawnCards, max($drawnCards))[0];
-        rsort($drawnCards);
-        $this->players[$winner]->addCards($drawnCards);
+        if ($isRecursive) {
+            $newPlayers = [];
+            foreach ($players as $i => $player) {
+                $newPlayers[$i] = $player->getCopy($drawnCards[$i]);
+            }
+            $winner = $this->playRecursive($newPlayers);
+            $winningCard = $drawnCards[$winner];
+        } else {
+            $winningCard = max($drawnCards);
+        }
+        $this->redistributeCards($players, $winningCard, $drawnCards);
     }
 
-    private function gameOver() : bool
+    private function redistributeCards(array $players, int $winningCard, array $drawnCards)
     {
-        foreach ($this->players as $player) {
+        $winner = array_keys($drawnCards, $winningCard)[0];
+        unset($drawnCards[$winner]);
+        $players[$winner]->addCards(array_merge([$winningCard], $drawnCards));
+    }
+
+    private function gameOver(array $players) : bool
+    {
+        foreach ($players as $player) {
             if ($player->isLoser()) return true;
         }
         return false;
     }
 
-    private function getWinner() : Player
+    private function getWinner(array $players) : int
     {
-        foreach ($this->players as $player) {
+        foreach ($players as $i => $player) {
             if (!$player->isLoser()) {
-                return $player;
+                return $i;
             }
         }
         throw new \Exception('Everyone is a loser');
+    }
+
+    private function getPlayers() : array
+    {
+        $players = [];
+        foreach ($this->getInputArray(PHP_EOL.PHP_EOL) as $definition) {
+            $rows = explode(PHP_EOL, $definition);
+            array_shift($rows);
+            $players[] = new Player($rows);
+        }
+        return $players;
     }
 }
