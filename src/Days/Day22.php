@@ -9,10 +9,12 @@ class Day22 extends BaseDay
 {
     public function execute()
     {
-        $winner = $this->play($players = $this->getPlayers());
+        $players = $this->getPlayers();
+        $winner = $this->play($players);
         $this->part1 = $players[$winner]->getScore();
 
-        $winner = $this->playRecursive($players = $this->getPlayers());
+        $players = $this->getPlayers();
+        $winner = $this->playRecursive($players);
         $this->part2 = $players[$winner]->getScore();
     }
 
@@ -33,10 +35,8 @@ class Day22 extends BaseDay
     {
         while (!$this->gameOver($players)) {
             $this->playRound($players);
-            foreach ($players as $i => $player) {
-                if ($player->hasHappenedBefore()) {
-                    return 0;
-                }
+            if ($this->thisHasHappenedBefore($players)) {
+                return 0;
             }
         }
         return $this->getWinner($players);
@@ -71,6 +71,16 @@ class Day22 extends BaseDay
         $winner = array_keys($drawnCards, $winningCard)[0];
         unset($drawnCards[$winner]);
         $players[$winner]->addCards(array_merge([$winningCard], $drawnCards));
+    }
+
+    private function thisHasHappenedBefore(array $players) : bool
+    {
+        foreach ($players as $i => $player) {
+            if ($player->hasHappenedBefore()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function gameOver(array $players) : bool
