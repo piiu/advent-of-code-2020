@@ -35,6 +35,11 @@ abstract class BaseDay
         ]);
     }
 
+    protected function getInputNumbers() : array
+    {
+        return array_map('intval', str_split($this->input));
+    }
+
     protected function getInputArray(string $delimiter = "\n") : array
     {
         return explode($delimiter, $this->input);

@@ -14,3 +14,4 @@
 - Day 11 - Slow
 - Day 13 - Maybe I could learn some modular arithmetic and not use WolframAlpha (again!)
 - Day 19 - Part 2 answer slightly off
+- Day 23 - PArt 2 slow AND wrong
