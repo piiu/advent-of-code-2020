@@ -108,9 +108,8 @@ class Day24 extends BaseDay
 
                     foreach (self::ALL_DIRECTIONS as $direction) {
                         $neighbourCoordinates = $this->getNewCoordinates($coordinates, $direction);
-                        if (!$this->get($neighbourCoordinates)) {
-                            $newValue = $this->getNewValue('W', $neighbourCoordinates);
-                            $this->setInState($newState, $neighbourCoordinates, $newValue);
+                        if (!$this->get($neighbourCoordinates) && $this->getNewValue('W', $neighbourCoordinates) === 'B') {
+                            $this->setInState($newState, $neighbourCoordinates, 'B');
                         }
                     }
                 }
